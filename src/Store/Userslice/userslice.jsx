@@ -1,8 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserDetails, signin, signout, signup } from "./user.service";
+import {
+  getUserDetails,
+  searchUsers,
+  signin,
+  signout,
+  signup,
+} from "./user.service";
 
 const initialState = {
   loading: false,
+  searchLoading: false,
+  usersBySearch: [],
   error: null,
   userDetails: {},
 };
@@ -53,6 +61,17 @@ const userSlice = createSlice({
     });
     builder.addCase(signout.rejected, (state, { payload }) => {
       state.loading = false;
+      state.error = payload;
+    });
+    builder.addCase(searchUsers.pending, (state) => {
+      state.searchLoading = true;
+    });
+    builder.addCase(searchUsers.fulfilled, (state, { payload }) => {
+      state.searchLoading = false;
+      state.usersBySearch = payload;
+    });
+    builder.addCase(searchUsers.rejected, (state, { payload }) => {
+      state.searchLoading = false;
       state.error = payload;
     });
   },

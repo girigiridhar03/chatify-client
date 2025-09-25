@@ -34,7 +34,6 @@ export const getUserDetails = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await API.get("/auth/user");
-      console.log(response);
       return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -47,6 +46,21 @@ export const signout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await API.post("/auth/signout");
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const searchUsers = createAsyncThunk(
+  "searchUsers",
+  async (searchValue, { rejectWithValue }) => {
+    try {
+      const searchResponse = await API.get(
+        `/api/auth/users?search=${searchValue}`
+      );
+
+      return searchResponse?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
     }
