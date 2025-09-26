@@ -1,10 +1,18 @@
-export const UserCard = () => {
+const getSender = (loggedIn, users) => {
+  return users[0]?._id === loggedIn ? users[1] : users[0];
+};
+
+export const UserCard = ({ chat, loggedInUser }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg px-3 py-2 w-full flex items-center justify-between">
+    <div className="bg-white shadow-md rounded-lg px-3 py-2 w-full flex items-center justify-between cursor-pointer">
       {/* Avatar */}
       <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gray-200">
         <img
-          src="https://res.cloudinary.com/dlbsvtq6c/image/upload/v1758503981/chatapp/images/ghp3hiem0nu9av5bozwy.jpg"
+          src={
+            chat?.isGroupChat
+              ? "https://imgs.search.brave.com/LjOJAkE0gZAIsmmtwZ3tRt-Z7kyyaNGcRrOr0ftGXxM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5naXRlbS5jb20v/cGltZ3MvbS81ODEt/NTgxMzUwNF9hdmF0/YXItZHVtbXktcG5n/LXRyYW5zcGFyZW50/LXBuZy5wbmc"
+              : getSender(loggedInUser, chat?.users)?.profilePic?.url
+          }
           alt="User"
           className="w-full h-full object-cover"
         />
@@ -12,7 +20,11 @@ export const UserCard = () => {
 
       {/* Name + Message */}
       <div className="flex-1 ml-3">
-        <p className="font-semibold text-gray-900">Ankit Mishra</p>
+        <p className="font-semibold text-gray-900">
+          {chat?.isGroupChat
+            ? chat?.chatName
+            : getSender(loggedInUser, chat?.users)?.username}
+        </p>
         <p className="text-sm text-gray-500 truncate w-[160px]">
           Are we meeting today? Lets Lorem ipsum dolor sit amet.
         </p>

@@ -4,15 +4,17 @@ import React from "react";
 import ChatSideNav from "./ChatSideNav";
 import ChatContainer from "./ChatContainer";
 import ChatRightNav from "./ChatRightNav";
+import ChatTopBar from "./ChatTopBar";
 
 const ChatLayout = () => {
-  // const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-  // const dispatch = useDispatch();
   return (
-    <div className="bg-[#F5F5F5] w-[100%] h-[100vh] flex">
-      <ChatSideNav />
-      <ChatContainer />
-      <ChatRightNav />
+    <div className="flex flex-col gap-[1rem] h-[100vh] border-2 border-red-500 overflow-hidden px-[1rem] py-[0.5rem]">
+      <ChatTopBar />
+      <div className=" w-[100%] h-[93%] flex gap-[1rem]">
+        <ChatSideNav />
+        <ChatContainer />
+        <ChatRightNav />
+      </div>
     </div>
   );
 };
