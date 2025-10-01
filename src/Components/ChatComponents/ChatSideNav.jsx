@@ -47,7 +47,7 @@ const ChatSideNav = () => {
 
       {/* UserCards */}
       <div className="flex flex-col gap-[1rem]">
-        {chats?.map((chat) => (
+        {chats?.chats?.map((chat) => (
           <UserCard
             key={chat?._id}
             chat={chat}
