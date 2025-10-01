@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getUserDetails,
+  groupSearch,
   searchUsers,
   signin,
   signout,
@@ -13,12 +14,26 @@ const initialState = {
   usersBySearch: [],
   error: null,
   userDetails: {},
+  searchValue: "",
+  groupSearchValue: "",
+  groupSearchUsers: [],
+  toggleModalVal: false,
 };
 
 const userSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchValue: (state, { payload }) => {
+      state.searchValue = payload;
+    },
+    setGroupSearchValue: (state, { payload }) => {
+      state.groupSearchValue = payload;
+    },
+    setToggleModal: (state, { payload }) => {
+      state.toggleModalVal = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signup.pending, (state) => {
       state.loading = true;
@@ -74,7 +89,19 @@ const userSlice = createSlice({
       state.searchLoading = false;
       state.error = payload;
     });
+    builder.addCase(groupSearch.pending, (state) => {
+      state.searchLoading = true;
+    });
+    builder.addCase(groupSearch.fulfilled, (state, { payload }) => {
+      state.searchLoading = false;
+      state.groupSearchUsers = payload;
+    });
+    builder.addCase(groupSearch.rejected, (state, { payload }) => {
+      state.searchLoading = false;
+      state.error = payload;
+    });
   },
 });
-
+export const { setSearchValue, setGroupSearchValue, setToggleModal } =
+  userSlice.actions;
 export default userSlice.reducer;

@@ -56,8 +56,21 @@ export const searchUsers = createAsyncThunk(
   "searchUsers",
   async (searchValue, { rejectWithValue }) => {
     try {
+      const searchResponse = await API.get(`/auth/users?search=${searchValue}`);
+
+      return searchResponse?.data?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const groupSearch = createAsyncThunk(
+  "groupSearch",
+  async (searchValue, { rejectWithValue }) => {
+    try {
       const searchResponse = await API.get(
-        `/api/auth/users?search=${searchValue}`
+        `/auth/groupSearch?search=${searchValue}`
       );
 
       return searchResponse?.data?.data;

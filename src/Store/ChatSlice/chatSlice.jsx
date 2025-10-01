@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchChats } from "./chat.service";
+import { accessChat, createGroup, fetchChats } from "./chat.service";
 
 const initialState = {
   loading: false,
@@ -26,6 +26,25 @@ const chatSlice = createSlice({
       state.searchLoading = false;
       state.loading = false;
       state.error = payload;
+    });
+    builder.addCase(accessChat.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(accessChat.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(accessChat.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    builder.addCase(createGroup.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createGroup.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(createGroup.rejected, (state) => {
+      state.loading = false;
     });
   },
 });

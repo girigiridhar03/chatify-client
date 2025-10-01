@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { CgMathPlus } from "react-icons/cg";
+
 const getSender = (loggedIn, users) => {
   return users[0]?._id === loggedIn ? users[1] : users[0];
 };
@@ -20,7 +23,7 @@ export const UserCard = ({ chat, loggedInUser }) => {
 
       {/* Name + Message */}
       <div className="flex-1 ml-3">
-        <p className="font-semibold text-gray-900">
+        <p className="font-semibold text-gray-900 capitalize">
           {chat?.isGroupChat
             ? chat?.chatName
             : getSender(loggedInUser, chat?.users)?.username}
@@ -37,6 +40,46 @@ export const UserCard = ({ chat, loggedInUser }) => {
           1
         </span> */}
       </div>
+    </div>
+  );
+};
+
+export const SearchCards = ({ user, handleAccessChat, bgcolor, hideId }) => {
+  const [buttonToggle, setButtonToggle] = useState(false);
+
+  return (
+    <div
+      className={`${bgcolor} shadow-md rounded-lg px-3 py-2 w-full flex items-center gap-[10px] justify-between cursor-pointer`}
+      onMouseEnter={() => setButtonToggle(true)}
+      onMouseLeave={() => setButtonToggle(false)}
+    >
+      {/* Avatar */}
+      <div className="flex items-center gap-[12px]">
+        <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gray-200">
+          <img
+            src={user?.profilePic?.url}
+            alt="User"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Name */}
+        <div>
+          <p className="text-lg truncate font-semibold capitalize">
+            {user?.username}
+          </p>
+          <p className="text-gray-500 text-sm">{user?.email}</p>
+        </div>
+      </div>
+      {buttonToggle && !hideId?.includes(user?._id) && (
+        <button
+          title="Add"
+          className="bg-gradient-to-r from-[#A259FF] to-[#6A11CB] w-[20px] h-[20px] rounded-full text-white flex items-center justify-center text-lg cursor-pointer"
+          onClick={() => handleAccessChat(user)}
+        >
+          <CgMathPlus />
+        </button>
+      )}
     </div>
   );
 };

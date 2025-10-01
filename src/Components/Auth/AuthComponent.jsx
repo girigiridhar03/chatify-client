@@ -64,8 +64,7 @@ const AuthComponent = () => {
   const handleLoginDetails = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(signin(loginDetails)).unwrap();
-      console.log(response);
+      await dispatch(signin(loginDetails)).unwrap();
       navigate("/");
     } catch (error) {
       console.log(error);
