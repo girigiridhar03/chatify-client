@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CgMathPlus } from "react-icons/cg";
 
 const getSender = (loggedIn, users) => {

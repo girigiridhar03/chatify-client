@@ -45,7 +45,8 @@ export const signout = createAsyncThunk(
   "signout",
   async (_, { rejectWithValue }) => {
     try {
-      await API.post("/auth/signout");
+      const response = await API.post("/auth/signout");
+      return response?.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -67,13 +68,26 @@ export const searchUsers = createAsyncThunk(
 
 export const groupSearch = createAsyncThunk(
   "groupSearch",
-  async (searchValue, { rejectWithValue }) => {
+  async ({ searchValue, page }, { rejectWithValue }) => {
     try {
       const searchResponse = await API.get(
-        `/auth/groupSearch?search=${searchValue}`
+        `/auth/groupSearch?search=${searchValue}&page=${page}&limit=${4}`
       );
 
       return searchResponse?.data?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getSingleUserDetails = createAsyncThunk(
+  "singleUserDetails",
+  async (userid, { rejectWithValue }) => {
+    try {
+      const response = await API.get(`/auth/user/${userid}`);
+
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error);
     }

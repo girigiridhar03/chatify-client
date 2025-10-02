@@ -5,13 +5,12 @@ import { getUserDetails } from "../../Store/Userslice/user.service";
 
 const MainLayout = () => {
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-  const isLoggedIn = useSelector((state) => state?.authReducer?.isLoggedIn);
   const dispatch = useDispatch();
   useEffect(() => {
     if (Object.keys(userDetails).length === 0) {
       dispatch(getUserDetails());
     }
-  }, [userDetails, dispatch, isLoggedIn]);
+  }, [userDetails, dispatch]);
 
   return (
     <div>

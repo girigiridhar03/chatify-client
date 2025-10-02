@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  getSingleUserDetails,
   getUserDetails,
   groupSearch,
   searchUsers,
@@ -18,6 +19,9 @@ const initialState = {
   groupSearchValue: "",
   groupSearchUsers: [],
   toggleModalVal: false,
+  singleUserDetails: {},
+  profileModalToggle: false,
+  profileId: "",
 };
 
 const userSlice = createSlice({
@@ -32,6 +36,15 @@ const userSlice = createSlice({
     },
     setToggleModal: (state, { payload }) => {
       state.toggleModalVal = payload;
+    },
+    resetStates: (state) => {
+      state.groupSearchUsers = [];
+    },
+    setProfileToggleModal: (state, { payload }) => {
+      state.profileModalToggle = payload;
+    },
+    setProfileId: (state, { payload }) => {
+      state.profileId = payload;
     },
   },
   extraReducers: (builder) => {
@@ -66,13 +79,23 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
+    builder.addCase(getSingleUserDetails.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSingleUserDetails.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.singleUserDetails = payload;
+    });
+    builder.addCase(getSingleUserDetails.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
     builder.addCase(signout.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(signout.fulfilled, (state) => {
       state.loading = false;
       state.error = null;
-      state.userDetails = {};
     });
     builder.addCase(signout.rejected, (state, { payload }) => {
       state.loading = false;
@@ -102,6 +125,12 @@ const userSlice = createSlice({
     });
   },
 });
-export const { setSearchValue, setGroupSearchValue, setToggleModal } =
-  userSlice.actions;
+export const {
+  setSearchValue,
+  setGroupSearchValue,
+  setToggleModal,
+  resetStates,
+  setProfileId,
+  setProfileToggleModal,
+} = userSlice.actions;
 export default userSlice.reducer;

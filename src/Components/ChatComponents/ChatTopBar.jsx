@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoNotifications } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchValue } from "../../Store/Userslice/userslice";
+import {
+  setProfileId,
+  setProfileToggleModal,
+  setSearchValue,
+} from "../../Store/Userslice/userslice";
 import { searchUsers } from "../../Store/Userslice/user.service";
 
 const ChatTopBar = () => {
@@ -41,13 +45,19 @@ const ChatTopBar = () => {
           <IoNotifications />
         </div>
         <div>
-          <div className="w-[39px] h-[39px] rounded-full overflow-hidden cursor-pointer">
+          <button
+            onClick={() => {
+              dispatch(setProfileToggleModal(true));
+              dispatch(setProfileId(userDetails?._id));
+            }}
+            className="w-[39px] h-[39px] rounded-full overflow-hidden cursor-pointer"
+          >
             <img
               src={userDetails?.profilePic?.url}
               alt="user"
               className="w-full h-full object-cover "
             />
-          </div>
+          </button>
         </div>
       </div>
     </div>

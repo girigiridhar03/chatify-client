@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  resetStates,
   setGroupSearchValue,
   setToggleModal,
 } from "../../Store/Userslice/userslice";
@@ -27,12 +28,18 @@ const ChatGroupModal = ({
   const [tags, setTags] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [chatName, setChatName] = useState("");
+  const [groupSearchData, setGroupSearchData] = useState([]);
+  const [page, setPage] = useState(1);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(groupSearch(groupSearchValue));
-  }, [groupSearchValue]);
+    dispatch(groupSearch({ searchValue: groupSearchValue, page }));
+  }, [groupSearchValue, page]);
+
+  useEffect(() => {
+    setGroupSearchData((prev) => [...prev, ...groupSearchUsers]);
+  }, [groupSearchUsers]);
 
   const handleTags = (user) => {
     setTags((prev) => [...prev, { id: user?._id, username: user?.username }]);
@@ -52,11 +59,25 @@ const ChatGroupModal = ({
     dispatch(createGroup({ chatName, users: tags?.map((item) => item?.id) }));
   };
 
+  const handleScroll = (e) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+    const remainingScroll = scrollHeight - (scrollTop + clientHeight);
+    console.log(remainingScroll < 20);
+    if (remainingScroll < 2) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
   return (
     <div className="w-full h-full fixed bg-[rgba(0,0,0,0.5)] top-0 left-0">
       <div className="bg-white w-[30%] rounded-xl shadow-lg p-4 relative flex flex-col gap-6 mx-auto mt-[10rem]">
         <button
-          onClick={() => dispatch(setToggleModal(false))}
+          onClick={() => {
+            dispatch(setToggleModal(false));
+            dispatch(setGroupSearchValue(""));
+            setGroupSearchData([]);
+            dispatch(resetStates());
+          }}
           className="absolute right-4 text-xl cursor-pointer"
         >
           <IoCloseSharp />
@@ -106,10 +127,13 @@ const ChatGroupModal = ({
         )}
 
         {/* Dropdown */}
-        {groupSearchUsers?.length > 0 && (
+        {groupSearchData?.length > 0 && (
           <div className="w-full">
-            <div className="bg-white shadow-lg rounded-lg w-full mx-auto max-h-[300px] overflow-auto p-4 flex flex-col gap-3">
-              {groupSearchUsers.map((user) => (
+            <div
+              onScroll={handleScroll}
+              className="bg-white shadow-lg rounded-lg w-full mx-auto max-h-[300px] overflow-auto p-4 flex flex-col gap-3"
+            >
+              {groupSearchData.map((user) => (
                 <SearchCards
                   key={user?._id}
                   user={user}

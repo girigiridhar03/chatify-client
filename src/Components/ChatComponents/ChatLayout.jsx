@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SearchCards } from "./utils/chat.utils";
 import { accessChat, fetchChats } from "../../Store/ChatSlice/chat.service";
 import ChatGroupModal from "./ChatGroupModal";
+import ProfileModal from "./ProfileModal";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -13,6 +14,9 @@ const ChatLayout = () => {
   );
   const toggleModalVal = useSelector(
     (state) => state?.authReducer?.toggleModalVal
+  );
+  const profileModalToggle = useSelector(
+    (state) => state?.authReducer?.profileModalToggle
   );
 
   const dispatch = useDispatch();
@@ -63,6 +67,9 @@ const ChatLayout = () => {
           placeHolderTwo={"Search User"}
         />
       )}
+
+      {/* Profile Modal */}
+      {profileModalToggle && <ProfileModal />}
     </div>
   );
 };
