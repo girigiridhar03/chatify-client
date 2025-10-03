@@ -7,6 +7,7 @@ import {
   signin,
   signout,
   signup,
+  updateProfileDetails,
 } from "./user.service";
 
 const initialState = {
@@ -121,6 +122,16 @@ const userSlice = createSlice({
     });
     builder.addCase(groupSearch.rejected, (state, { payload }) => {
       state.searchLoading = false;
+      state.error = payload;
+    });
+    builder.addCase(updateProfileDetails.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateProfileDetails.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(updateProfileDetails.rejected, (state, { payload }) => {
+      state.loading = false;
       state.error = payload;
     });
   },

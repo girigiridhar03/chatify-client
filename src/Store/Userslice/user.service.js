@@ -93,3 +93,17 @@ export const getSingleUserDetails = createAsyncThunk(
     }
   }
 );
+
+export const updateProfileDetails = createAsyncThunk(
+  "updateProfile",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await API.patch("/auth/user", formData, {
+        header: { "Content-Type": "multipart/form-data" },
+      });
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
