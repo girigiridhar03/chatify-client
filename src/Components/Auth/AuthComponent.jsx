@@ -1,7 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signin, signup } from "../../Store/Userslice/user.service";
+import {
+  getUserDetails,
+  signin,
+  signup,
+} from "../../Store/Userslice/user.service";
 import Login from "./Login";
 import SignUp from "./SignUp";
 const AuthComponent = () => {
@@ -66,6 +70,8 @@ const AuthComponent = () => {
     e.preventDefault();
     try {
       await dispatch(signin(loginDetails)).unwrap();
+      const user = await dispatch(getUserDetails()).unwrap();
+      localStorage.setItem("user", JSON.stringify(user));
       navigate("/");
     } catch (error) {
       console.log(error);

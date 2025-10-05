@@ -1,15 +1,26 @@
 import { useState } from "react";
 import { CgMathPlus } from "react-icons/cg";
 import { IoLogOut } from "react-icons/io5";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdKeyboardArrowLeft } from "react-icons/md";
+import { FaEye } from "react-icons/fa6";
+import { BsSendFill } from "react-icons/bs";
+import { setSelectedChat } from "../../../Store/ChatSlice/chatSlice";
+import { getSender } from "../Helpers/HelperFunctions";
+import {
+  setProfileId,
+  setProfileToggleModal,
+} from "../../../Store/Userslice/userslice";
 
-const getSender = (loggedIn, users) => {
-  return users[0]?._id === loggedIn ? users[1] : users[0];
-};
+export const UserCard = ({ chat, loggedInUser, dispatch }) => {
+  const handleSelectedCard = () => {
+    dispatch(setSelectedChat(chat?._id));
+  };
 
-export const UserCard = ({ chat, loggedInUser }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg px-3 py-2 w-full flex items-center justify-between cursor-pointer">
+    <div
+      onClick={handleSelectedCard}
+      className="bg-white shadow-md rounded-lg px-3 py-2 w-full flex items-center justify-between cursor-pointer"
+    >
       {/* Avatar */}
       <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gray-200">
         <img
@@ -228,6 +239,73 @@ export const ProfileHeader = ({
         </div>
         <p>{about}</p>
       </div>
+    </div>
+  );
+};
+
+export const ChatContainerTopBar = ({
+  singleChatDetails,
+  userDetails,
+  dispatch,
+}) => {
+  return (
+    <div className="w-full flex justify-between items-center h-full px-[0.5rem]">
+      <div className="flex items-center gap-[.3rem]">
+        <button className="text-4xl cursor-pointer">
+          <MdKeyboardArrowLeft />
+        </button>
+        <div className="flex  items-center gap-2">
+          <div className="w-[50px] h-[50px] rounded-full overflow-hidden border-2 border-gray-200">
+            <img
+              src={
+                singleChatDetails?.isGroupChat
+                  ? "https://imgs.search.brave.com/LjOJAkE0gZAIsmmtwZ3tRt-Z7kyyaNGcRrOr0ftGXxM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5naXRlbS5jb20v/cGltZ3MvbS81ODEt/NTgxMzUwNF9hdmF0/YXItZHVtbXktcG5n/LXRyYW5zcGFyZW50/LXBuZy5wbmc"
+                  : getSender(userDetails?._id, singleChatDetails?.users)
+                      ?.profilePic?.url
+              }
+              alt="User"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <p className="font-semibold text-xl">
+            {singleChatDetails?.isGroupChat
+              ? singleChatDetails?.chatName
+              : getSender(userDetails?._id, singleChatDetails?.users)?.username}
+          </p>
+        </div>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            const userid = getSender(
+              userDetails?._id,
+              singleChatDetails?.users
+            )?._id;
+            dispatch(setProfileToggleModal(true));
+            dispatch(setProfileId(userid));
+          }}
+          className="bg-gray-200 w-[40px] h-[40px] rounded-lg flex items-center justify-center text-lg cursor-pointer"
+        >
+          <FaEye />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const ChatContainerFooter = () => {
+  return (
+    <div className="w-full h-full flex items-center px-[1rem] py-[0.5rem] gap-[1rem]">
+      <div className="flex-1 bg-gray-200 h-[90%] rounded-3xl overflow-hidden">
+        <input
+          type="text"
+          className="w-full h-full px-[1.2rem] placeholder:font-semibold outline-0"
+          placeholder="Type a message Here..."
+        />
+      </div>
+      <button className="bg-gradient-to-r from-[#A259FF] to-[#6A11CB] w-[40px] h-[40px] text-lg text-white flex items-center justify-center rounded-full cursor-pointer">
+        <BsSendFill />
+      </button>
     </div>
   );
 };

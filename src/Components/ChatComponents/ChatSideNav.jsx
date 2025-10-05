@@ -52,6 +52,7 @@ const ChatSideNav = () => {
             key={chat?._id}
             chat={chat}
             loggedInUser={userDetails?._id}
+            dispatch={dispatch}
           />
         ))}
       </div>

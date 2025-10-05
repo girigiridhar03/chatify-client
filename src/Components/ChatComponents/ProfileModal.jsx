@@ -49,6 +49,7 @@ const ProfileModal = () => {
   const handleSignout = async () => {
     try {
       await dispatch(signout()).unwrap();
+      localStorage.removeItem("user");
       toast.success("Logout successfully.");
       navigate("/signin");
     } catch (error) {
@@ -85,6 +86,9 @@ const ProfileModal = () => {
   return (
     <div className="w-full h-full fixed bg-[rgba(0,0,0,0.5)] top-0 left-0">
       <div className="bg-white w-[30%] rounded-xl shadow-lg p-4 relative flex flex-col gap-6 mx-auto mt-[10rem]">
+        <h3 className="text-lg font-semibold">
+          {showEditForm ? " Profile Details" : "Profile View"}
+        </h3>
         <ProfileHeader
           singleUserDetails={singleUserDetails}
           username={username}

@@ -15,7 +15,7 @@ const initialState = {
   searchLoading: false,
   usersBySearch: [],
   error: null,
-  userDetails: {},
+  userDetails: JSON.parse(localStorage.getItem("user")) || {},
   searchValue: "",
   groupSearchValue: "",
   groupSearchUsers: [],
@@ -94,9 +94,8 @@ const userSlice = createSlice({
     builder.addCase(signout.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(signout.fulfilled, (state) => {
-      state.loading = false;
-      state.error = null;
+    builder.addCase(signout.fulfilled, () => {
+      return initialState;
     });
     builder.addCase(signout.rejected, (state, { payload }) => {
       state.loading = false;

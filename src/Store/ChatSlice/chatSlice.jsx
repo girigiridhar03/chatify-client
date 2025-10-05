@@ -1,17 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { accessChat, createGroup, fetchChats } from "./chat.service";
+import {
+  accessChat,
+  createGroup,
+  fetchAllMessages,
+  fetchChats,
+  getSingleChatDetails,
+} from "./chat.service";
+import { signout } from "../Userslice/user.service";
 
-const initialState = {
+export const initialState = {
   loading: false,
   searchLoading: false,
   chats: [],
   error: null,
+  singleChatDetails: {},
+  selectedChat: "",
+  allMessages: [],
 };
 
 const chatSlice = createSlice({
   name: "chatslice",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedChat: (state, { payload }) => {
+      state.selectedChat = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchChats.pending, (state, { payload }) => {
       state.searchLoading = !payload ? false : true;
@@ -46,7 +60,32 @@ const chatSlice = createSlice({
     builder.addCase(createGroup.rejected, (state) => {
       state.loading = false;
     });
+    builder.addCase(getSingleChatDetails.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSingleChatDetails.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.singleChatDetails = payload;
+    });
+    builder.addCase(getSingleChatDetails.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    builder.addCase(fetchAllMessages.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllMessages.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.allMessages = payload;
+    });
+    builder.addCase(fetchAllMessages.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    builder.addCase(signout.fulfilled, () => initialState);
   },
 });
+
+export const { setSelectedChat } = chatSlice.actions;
 
 export default chatSlice.reducer;

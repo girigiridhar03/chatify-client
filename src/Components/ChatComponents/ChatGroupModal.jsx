@@ -38,6 +38,7 @@ const ChatGroupModal = ({
   }, [groupSearchValue, page]);
 
   useEffect(() => {
+    if (groupSearchUsers?.length === 0) return setGroupSearchData([]);
     setGroupSearchData((prev) => [...prev, ...groupSearchUsers]);
   }, [groupSearchUsers]);
 

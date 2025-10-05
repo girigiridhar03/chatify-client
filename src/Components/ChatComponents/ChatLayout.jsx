@@ -54,7 +54,7 @@ const ChatLayout = () => {
       <div className=" w-[100%] h-[93%] flex gap-[1rem]">
         <ChatSideNav />
         <ChatContainer />
-        <ChatRightNav />
+        {/* <ChatRightNav /> */}
       </div>
 
       {/* Modal */}

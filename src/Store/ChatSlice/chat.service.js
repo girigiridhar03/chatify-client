@@ -43,3 +43,38 @@ export const createGroup = createAsyncThunk(
     }
   }
 );
+
+export const getSingleChatDetails = createAsyncThunk(
+  "singleChatDetails",
+  async (chatId, { rejectWithValue }) => {
+    try {
+      const response = await API.get(`/chat/${chatId}`);
+      return response?.data?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchAllMessages = createAsyncThunk(
+  "allMessages",
+  async (chatId, { rejectWithValue }) => {
+    try {
+      const response = await API.get(`/message/${chatId}`);
+      return response?.data?.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const sendMessage = createAsyncThunk(
+  "sendMessage",
+  async (messageObj, { rejectWithValue }) => {
+    try {
+      await API.post(`/message`, messageObj);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
