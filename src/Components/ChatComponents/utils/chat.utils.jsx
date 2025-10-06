@@ -4,7 +4,10 @@ import { IoLogOut } from "react-icons/io5";
 import { MdEdit, MdKeyboardArrowLeft } from "react-icons/md";
 import { FaEye } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
-import { setSelectedChat } from "../../../Store/ChatSlice/chatSlice";
+import {
+  setSelectedChat,
+  setSendMessageValue,
+} from "../../../Store/ChatSlice/chatSlice";
 import { getSender } from "../Helpers/HelperFunctions";
 import {
   setProfileId,
@@ -293,17 +296,31 @@ export const ChatContainerTopBar = ({
   );
 };
 
-export const ChatContainerFooter = () => {
+export const ChatContainerFooter = ({
+  dispatch,
+  sendMessageValue,
+  handleSendMessage,
+}) => {
   return (
     <div className="w-full h-full flex items-center px-[1rem] py-[0.5rem] gap-[1rem]">
       <div className="flex-1 bg-gray-200 h-[90%] rounded-3xl overflow-hidden">
         <input
+          value={sendMessageValue}
+          onChange={(e) => dispatch(setSendMessageValue(e.target.value))}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSendMessage();
+            }
+          }}
           type="text"
           className="w-full h-full px-[1.2rem] placeholder:font-semibold outline-0"
           placeholder="Type a message Here..."
         />
       </div>
-      <button className="bg-gradient-to-r from-[#A259FF] to-[#6A11CB] w-[40px] h-[40px] text-lg text-white flex items-center justify-center rounded-full cursor-pointer">
+      <button
+        onClick={handleSendMessage}
+        className="bg-gradient-to-r from-[#A259FF] to-[#6A11CB] w-[40px] h-[40px] text-lg text-white flex items-center justify-center rounded-full cursor-pointer"
+      >
         <BsSendFill />
       </button>
     </div>
