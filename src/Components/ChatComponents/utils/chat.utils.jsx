@@ -6,7 +6,6 @@ import { FaEye } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
 import {
   setSelectedChat,
-  setSendMessageValue,
 } from "../../../Store/ChatSlice/chatSlice";
 import { getSender } from "../Helpers/HelperFunctions";
 import {
@@ -250,6 +249,7 @@ export const ChatContainerTopBar = ({
   singleChatDetails,
   userDetails,
   dispatch,
+  isOnline,
 }) => {
   return (
     <div className="w-full flex justify-between items-center h-full px-[0.5rem]">
@@ -270,11 +270,17 @@ export const ChatContainerTopBar = ({
               className="w-full h-full object-cover"
             />
           </div>
-          <p className="font-semibold text-xl">
-            {singleChatDetails?.isGroupChat
-              ? singleChatDetails?.chatName
-              : getSender(userDetails?._id, singleChatDetails?.users)?.username}
-          </p>
+          <div className="flex flex-col">
+            <p className="font-semibold text-xl">
+              {singleChatDetails?.isGroupChat
+                ? singleChatDetails?.chatName
+                : getSender(userDetails?._id, singleChatDetails?.users)
+                    ?.username}
+            </p>
+            {isOnline && (
+              <p className="text-xs text-green-500 font-semibold">Online</p>
+            )}
+          </div>
         </div>
       </div>
       <div>
@@ -297,16 +303,16 @@ export const ChatContainerTopBar = ({
 };
 
 export const ChatContainerFooter = ({
-  dispatch,
   sendMessageValue,
   handleSendMessage,
+  handleChangeInput,
 }) => {
   return (
     <div className="w-full h-full flex items-center px-[1rem] py-[0.5rem] gap-[1rem]">
       <div className="flex-1 bg-gray-200 h-[90%] rounded-3xl overflow-hidden">
         <input
           value={sendMessageValue}
-          onChange={(e) => dispatch(setSendMessageValue(e.target.value))}
+          onChange={handleChangeInput}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSendMessage();

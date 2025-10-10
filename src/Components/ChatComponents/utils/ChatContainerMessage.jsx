@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMessages } from "../../../Store/ChatSlice/chat.service";
+import TypingIndicator from "../ChatTypingIndicator";
 
-const ChatContainerMessage = ({allMessages}) => {
+const ChatContainerMessage = ({ allMessages, otherUsersTyping }) => {
   const selectedChat = useSelector((state) => state?.chatReducer?.selectedChat);
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const ChatContainerMessage = ({allMessages}) => {
           {msg.content}
         </div>
       ))}
+      {otherUsersTyping && <TypingIndicator />}
       <div ref={messageEndRef} />
     </div>
   );
