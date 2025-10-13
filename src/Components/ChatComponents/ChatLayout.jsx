@@ -7,6 +7,9 @@ import { SearchCards } from "./utils/chat.utils";
 import { accessChat, fetchChats } from "../../Store/ChatSlice/chat.service";
 import ChatGroupModal from "./ChatGroupModal";
 import ProfileModal from "./ProfileModal";
+import { useEffect } from "react";
+import { socket } from "./utils/socket";
+import { setNotification } from "../../Store/ChatSlice/chatSlice";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -18,6 +21,44 @@ const ChatLayout = () => {
   const profileModalToggle = useSelector(
     (state) => state?.authReducer?.profileModalToggle
   );
+  const userDetails = useSelector((state) => state?.authReducer?.userDetails);
+
+  const notification = useSelector((state) => state.chatReducer?.notification);
+
+  console.log(notification);
+
+  useEffect(() => {
+    const registerUser = () => {
+      socket.emit("register_user", {
+        name: userDetails?.username,
+        _id: userDetails?._id,
+      });
+    };
+
+    if (socket.connected) {
+      registerUser();
+    } else {
+      socket.on("connect", registerUser);
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
+    socket.on("notification", (data) => {
+      // Update Redux state for notifications
+      dispatch(setNotification(data));
+
+      // Optional: browser notification
+      if (Notification.permission === "granted") {
+        new Notification(`New message from ${data.senderId}`, {
+          body: data.message,
+        });
+      }
+    });
+
+    return () => {
+      socket.off("notification");
+    };
+  }, []);
 
   const dispatch = useDispatch();
 

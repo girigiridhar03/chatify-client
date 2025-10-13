@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getSingleChatDetails,
-  sendMessage,
-} from "../../Store/ChatSlice/chat.service";
+import { getSingleChatDetails } from "../../Store/ChatSlice/chat.service";
 import { ChatContainerFooter, ChatContainerTopBar } from "./utils/chat.utils";
 import ChatContainerMessage from "./utils/ChatContainerMessage";
 import { setSendMessageValue } from "../../Store/ChatSlice/chatSlice";
 import { socket } from "./utils/socket";
 import { useState } from "react";
 import { getSender } from "./Helpers/HelperFunctions";
+import moment from "moment";
 
 const ChatContainer = () => {
   const selectedChat = useSelector((state) => state.chatReducer?.selectedChat);
@@ -27,7 +25,6 @@ const ChatContainer = () => {
   const [otherUsersTyping, setOtherUsersTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeOutRef = useRef(null);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,21 +42,23 @@ const ChatContainer = () => {
   useEffect(() => {
     if (!userDetails || !selectedUser) return;
 
-    const registerUser = () => {
-      socket.emit("register_user", {
-        name: userDetails?.username,
-        _id: userDetails?._id,
-      });
-    };
-
-    if (socket.connected) {
-      registerUser();
-    } else {
-      socket.on("connect", registerUser);
-    }
-
     socket.on("receive_message", (data) => {
-      setMessages((prev) => [...prev, data]);
+      if (selectedChat !== data.chatId) return;
+      setMessages((prev) => {
+        const getIndex = prev.findIndex((msg) =>
+          moment(msg.date).isSame(moment(data.date), "day")
+        );
+        if (getIndex !== -1) {
+          const updatedMessages = [...prev];
+          updatedMessages[getIndex] = {
+            ...updatedMessages[getIndex],
+            messages: [...updatedMessages[getIndex].messages, ...data.messages],
+          };
+          return updatedMessages;
+        } else {
+          return [...prev, { date: data.date, messages: data.messages }];
+        }
+      });
     });
 
     socket.on("user_stop_typing", ({ chatId, userId }) => {
@@ -71,7 +70,6 @@ const ChatContainer = () => {
     return () => {
       socket.off("connect");
       socket.off("receive_message");
-      socket.off("user_online_status");
     };
   }, [userDetails, selectedUser, selectedChat]);
 
@@ -92,14 +90,19 @@ const ChatContainer = () => {
     return () => {
       socket.off("user_typing");
       socket.off("user_stop_typing");
+      socket.off("user_online_status");
     };
-  }, [selectedChat]);
+  }, [selectedChat, userDetails._id, selectedUser]);
 
   // Join Chat || CheckUserOnline
   useEffect(() => {
     if (!selectedUser || !selectedChat) return;
     socket.emit("join_chat", selectedChat);
     socket.emit("check_user_online", { selectedUser: selectedUser });
+
+    return () => {
+      socket.emit("leave_chat", selectedChat);
+    };
   }, [selectedUser, selectedChat]);
 
   useEffect(() => {
@@ -114,12 +117,17 @@ const ChatContainer = () => {
   const handleSendMessage = () => {
     if (!sendMessageValue) return;
 
-    dispatch(sendMessage({ chatId: selectedChat, content: sendMessageValue }));
+    const usersInChat = singleChatDetails?.users?.map((user) => user?._id);
+    const activeChatUserId = userDetails?._id;
     socket.emit("send_message", {
       chatId: selectedChat,
+      date: moment().format("YYYY-MM-DD"),
       senderId: userDetails?._id,
       content: sendMessageValue,
       profilePic: userDetails?.profilePic,
+      createdAt: moment().format("DD-MMM-YYYY"),
+      usersInChat,
+      activeChatUserId,
     });
     dispatch(setSendMessageValue(""));
   };
@@ -142,9 +150,7 @@ const ChatContainer = () => {
       });
     }, 1000);
   };
-
-  console.log(isOnline);
-
+  console.log("messages", messages);
   return (
     <div className="w-[80%] h-[100%] bg-[#ffffff] shadow-lg rounded-lg flex flex-col overflow-hidden">
       {/* TopBar */}

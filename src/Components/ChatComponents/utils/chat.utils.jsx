@@ -4,14 +4,13 @@ import { IoLogOut } from "react-icons/io5";
 import { MdEdit, MdKeyboardArrowLeft } from "react-icons/md";
 import { FaEye } from "react-icons/fa6";
 import { BsSendFill } from "react-icons/bs";
-import {
-  setSelectedChat,
-} from "../../../Store/ChatSlice/chatSlice";
+import { setSelectedChat } from "../../../Store/ChatSlice/chatSlice";
 import { getSender } from "../Helpers/HelperFunctions";
 import {
   setProfileId,
   setProfileToggleModal,
 } from "../../../Store/Userslice/userslice";
+import moment from "moment";
 
 export const UserCard = ({ chat, loggedInUser, dispatch }) => {
   const handleSelectedCard = () => {
@@ -44,13 +43,24 @@ export const UserCard = ({ chat, loggedInUser, dispatch }) => {
             : getSender(loggedInUser, chat?.users)?.username}
         </p>
         <p className="text-sm text-gray-500 truncate w-[160px]">
-          Are we meeting today? Lets Lorem ipsum dolor sit amet.
+          {chat?.lastMessage
+            ? chat?.lastMessage?.sender?._id === loggedInUser
+              ? `You: ${chat?.lastMessage?.content}`
+              : `${chat?.lastMessage?.sender?.username}: ${chat?.lastMessage?.content}`
+            : ""}
         </p>
       </div>
 
       {/* Time + Unread */}
       <div className="self-start mt-0.5">
-        <p className="text-xs text-gray-500">3:45 PM</p>
+        {chat?.lastMessage ? (
+          <p className="text-xs text-gray-500">
+            {moment(chat?.lastMessage?.createdAt).format("hh:mm A")}
+          </p>
+        ) : (
+          ""
+        )}
+
         {/* <span className="mt-1 w-5 h-5 flex items-center justify-center rounded-full bg-gradient-to-r from-[#A259FF] to-[#6A11CB] text-white text-xs">
           1
         </span> */}

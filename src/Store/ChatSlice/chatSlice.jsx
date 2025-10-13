@@ -17,6 +17,7 @@ export const initialState = {
   selectedChat: "",
   allMessages: [],
   sendMessageValue: "",
+  notification: [],
 };
 
 const chatSlice = createSlice({
@@ -28,6 +29,9 @@ const chatSlice = createSlice({
     },
     setSendMessageValue: (state, { payload }) => {
       state.sendMessageValue = payload;
+    },
+    setNotification: (state, { payload }) => {
+      state.notification = payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,6 +94,7 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setSelectedChat, setSendMessageValue } = chatSlice.actions;
+export const { setSelectedChat, setSendMessageValue, setNotification } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;
