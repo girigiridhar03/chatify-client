@@ -125,7 +125,7 @@ const ChatContainer = () => {
       senderId: userDetails?._id,
       content: sendMessageValue,
       profilePic: userDetails?.profilePic,
-      createdAt: moment().format("DD-MMM-YYYY"),
+      createdAt: new Date().toISOString(),
       usersInChat,
       activeChatUserId,
     });
