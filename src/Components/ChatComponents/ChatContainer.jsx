@@ -126,6 +126,7 @@ const ChatContainer = () => {
       content: sendMessageValue,
       profilePic: userDetails?.profilePic,
       createdAt: new Date().toISOString(),
+      name: userDetails?.username,
       usersInChat,
       activeChatUserId,
     });
@@ -164,7 +165,7 @@ const ChatContainer = () => {
         />
       </div>
       {/* Message Section */}
-      <div className="bg-[#F5F5F5] flex-1 overflow-y-auto w-full h-full p-[1.3rem] flex flex-col">
+      <div className="bg-[#F5F5F5] flex-1 overflow-y-hidden w-full h-full flex flex-col">
         <ChatContainerMessage
           allMessages={messages}
           otherUsersTyping={otherUsersTyping}

@@ -10,7 +10,7 @@ const ChatContainerMessage = ({ allMessages, otherUsersTyping }) => {
   const dispatch = useDispatch();
   const messageEndRef = useRef(null);
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [allMessages]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const ChatContainerMessage = ({ allMessages, otherUsersTyping }) => {
   }, [selectedChat]);
 
   return (
-    <div className="flex flex-col gap-2 h-auto">
+    <div className="flex flex-col gap-2 overflow-y-auto px-4 py-2 h-full">
       {allMessages?.map((msg, i) => (
         <React.Fragment key={i}>
           <div className="my-1 text-sm text-gray-500 text-center font-semibold">

@@ -12,6 +12,9 @@ import { searchUsers } from "../../Store/Userslice/user.service";
 const ChatTopBar = () => {
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
   const searchValue = useSelector((state) => state?.authReducer?.searchValue);
+  const notificationCount = useSelector(
+    (state) => state?.chatReducer?.notificationCount
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -41,8 +44,16 @@ const ChatTopBar = () => {
 
       {/* Notification and Profile Pic */}
       <div className="flex items-center gap-[1rem]">
-        <div className="text-2xl text-gray-500">
-          <IoNotifications />
+        <div className="relative">
+          {notificationCount && notificationCount > 0 && (
+            <p className="absolute bg-red-600 w-[15px] h-[15px] rounded-full flex items-center justify-center text-[10px] font-semibold text-white right-0 top-[-6px] z-20">
+              {notificationCount}
+            </p>
+          )}
+
+          <button className="text-2xl text-gray-500 cursor-pointer">
+            <IoNotifications />
+          </button>
         </div>
         <div>
           <button

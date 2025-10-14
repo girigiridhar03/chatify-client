@@ -9,7 +9,10 @@ import ChatGroupModal from "./ChatGroupModal";
 import ProfileModal from "./ProfileModal";
 import { useEffect } from "react";
 import { socket } from "./utils/socket";
-import { setNotification } from "../../Store/ChatSlice/chatSlice";
+import {
+  setNotification,
+  setNotificationCount,
+} from "../../Store/ChatSlice/chatSlice";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -22,8 +25,8 @@ const ChatLayout = () => {
     (state) => state?.authReducer?.profileModalToggle
   );
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-
   const notification = useSelector((state) => state.chatReducer?.notification);
+  const dispatch = useDispatch();
 
   console.log(notification);
 
@@ -44,23 +47,32 @@ const ChatLayout = () => {
 
   useEffect(() => {
     socket.on("notification", (data) => {
-      // Update Redux state for notifications
       dispatch(setNotification(data));
 
-      // Optional: browser notification
       if (Notification.permission === "granted") {
-        new Notification(`New message from ${data.senderId}`, {
+        new Notification(`New message from ${data.username}`, {
           body: data.message,
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            new Notification(`New message from ${data.username}`, {
+              body: data.message,
+            });
+          }
         });
       }
     });
 
+    socket.on("notification_count", (data) => {
+      dispatch(setNotificationCount(data?.notificationCount));
+    });
+
     return () => {
       socket.off("notification");
+      socket.off("notification_count");
     };
   }, []);
-
-  const dispatch = useDispatch();
 
   const handleAccessChat = async (user) => {
     try {
@@ -74,7 +86,7 @@ const ChatLayout = () => {
   };
 
   return (
-    <div className="flex flex-col gap-[1rem] h-[100vh] overflow-hidden px-[1rem] py-[0.5rem] relative">
+    <div className="flex flex-col gap-[1rem] h-[100vh] overflow-hidden px-[1rem] py-[0.5rem] relative bg-[#ececec]">
       {/* Search Box */}
       <div className=" w-[51%] h-[500px] absolute  left-1/2 -translate-x-1/2 top-[8%]">
         {usersBySearch?.length > 0 && (
@@ -92,7 +104,7 @@ const ChatLayout = () => {
         )}
       </div>
       <ChatTopBar />
-      <div className=" w-[100%] h-[93%] flex gap-[1rem]">
+      <div className=" w-[100%] h-[93%] flex gap-[1rem] overflow-hidden py-[0.3rem]">
         <ChatSideNav />
         <ChatContainer />
         {/* <ChatRightNav /> */}

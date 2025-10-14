@@ -78,3 +78,21 @@ export const sendMessage = createAsyncThunk(
     }
   }
 );
+
+export const getAllNotifications = createAsyncThunk(
+  "notifications",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await API.get("/api/notification");
+
+      let data = response?.data?.data;
+
+      return {
+        notification: data?.allNotifications,
+        unReadCount: data?.notificationCount,
+      };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
