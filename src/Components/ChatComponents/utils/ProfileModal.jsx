@@ -5,11 +5,11 @@ import {
   getUserDetails,
   signout,
   updateProfileDetails,
-} from "../../Store/Userslice/user.service";
+} from "../../../Store/Userslice/user.service";
 import { useNavigate } from "react-router-dom";
-import { setProfileToggleModal } from "../../Store/Userslice/userslice";
-import { FooterButtons, InputFields, ProfileHeader } from "./utils/chat.utils";
+import { setProfileToggleModal } from "../../../Store/Userslice/userslice";
 import { Bounce, toast } from "react-toastify";
+import { FooterButtons, InputFields, ProfileHeader } from "./chat.utils";
 
 const ProfileModal = () => {
   const fileInputRef = useRef(null);

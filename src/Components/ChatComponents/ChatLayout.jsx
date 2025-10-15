@@ -5,14 +5,15 @@ import ChatTopBar from "./ChatTopBar";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchCards } from "./utils/chat.utils";
 import { accessChat, fetchChats } from "../../Store/ChatSlice/chat.service";
-import ChatGroupModal from "./ChatGroupModal";
-import ProfileModal from "./ProfileModal";
 import { useEffect } from "react";
 import { socket } from "./utils/socket";
 import {
   setNotification,
   setNotificationCount,
 } from "../../Store/ChatSlice/chatSlice";
+import ProfileModal from "./utils/ProfileModal";
+import ChatGroupModal from "./utils/ChatGroupModal";
+import NotificationModal from "./utils/NotificationModal";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -25,10 +26,10 @@ const ChatLayout = () => {
     (state) => state?.authReducer?.profileModalToggle
   );
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-  const notification = useSelector((state) => state.chatReducer?.notification);
+  const notificationToggle = useSelector(
+    (state) => state.chatReducer?.notificationToggle
+  );
   const dispatch = useDispatch();
-
-  console.log(notification);
 
   useEffect(() => {
     const registerUser = () => {
@@ -50,14 +51,14 @@ const ChatLayout = () => {
       dispatch(setNotification(data));
 
       if (Notification.permission === "granted") {
-        new Notification(`New message from ${data.username}`, {
-          body: data.message,
+        new Notification(`New message from ${data.sender?.username}`, {
+          body: data.message?.content,
         });
       } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
           if (permission === "granted") {
-            new Notification(`New message from ${data.username}`, {
-              body: data.message,
+            new Notification(`New message from ${data.sender?.username}`, {
+              body: data.message?.content,
             });
           }
         });
@@ -123,6 +124,9 @@ const ChatLayout = () => {
 
       {/* Profile Modal */}
       {profileModalToggle && <ProfileModal />}
+
+      {/* Notification Modal */}
+      {notificationToggle && <NotificationModal />}
     </div>
   );
 };

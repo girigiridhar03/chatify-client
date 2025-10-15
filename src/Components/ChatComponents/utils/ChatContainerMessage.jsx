@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMessages } from "../../../Store/ChatSlice/chat.service";
-import TypingIndicator from "../ChatTypingIndicator";
+import TypingIndicator from "./ChatTypingIndicator";
 import moment from "moment";
 
 const ChatContainerMessage = ({ allMessages, otherUsersTyping }) => {

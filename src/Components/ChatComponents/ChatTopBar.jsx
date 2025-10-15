@@ -8,6 +8,8 @@ import {
   setSearchValue,
 } from "../../Store/Userslice/userslice";
 import { searchUsers } from "../../Store/Userslice/user.service";
+import { getAllNotifications } from "../../Store/ChatSlice/chat.service";
+import { setNotificationToggle } from "../../Store/ChatSlice/chatSlice";
 
 const ChatTopBar = () => {
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
@@ -15,11 +17,18 @@ const ChatTopBar = () => {
   const notificationCount = useSelector(
     (state) => state?.chatReducer?.notificationCount
   );
-
+  const notification = useSelector((state) => state?.chatReducer?.notification);
+  const notificationLoading = useSelector(
+    (state) => state?.chatReducer?.notificationLoading
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(searchUsers(searchValue));
   }, [searchValue]);
+
+  useEffect(() => {
+    dispatch(getAllNotifications());
+  }, []);
 
   return (
     <div className="bg-[#F5F5F5] shadow-md rounded-lg w-[100%] h-[7%] flex items-center justify-between px-[1rem] py-[0.5rem]">
@@ -51,7 +60,10 @@ const ChatTopBar = () => {
             </p>
           )}
 
-          <button className="text-2xl text-gray-500 cursor-pointer">
+          <button
+            onClick={() => dispatch(setNotificationToggle(true))}
+            className="text-2xl text-gray-500 cursor-pointer"
+          >
             <IoNotifications />
           </button>
         </div>

@@ -21,6 +21,7 @@ export const initialState = {
   notification: [],
   notificationCount: null,
   notificationLoading: false,
+  notificationToggle: false,
 };
 
 const chatSlice = createSlice({
@@ -38,6 +39,9 @@ const chatSlice = createSlice({
     },
     setNotificationCount: (state, { payload }) => {
       state.notificationCount = payload;
+    },
+    setNotificationToggle: (state, { payload }) => {
+      state.notificationToggle = payload;
     },
   },
   extraReducers: (builder) => {
@@ -117,6 +121,7 @@ export const {
   setSendMessageValue,
   setNotification,
   setNotificationCount,
+  setNotificationToggle,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

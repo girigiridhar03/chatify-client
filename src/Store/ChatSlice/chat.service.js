@@ -83,7 +83,7 @@ export const getAllNotifications = createAsyncThunk(
   "notifications",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await API.get("/api/notification");
+      const response = await API.get("/notification");
 
       let data = response?.data?.data;
 

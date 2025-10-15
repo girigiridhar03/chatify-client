@@ -126,7 +126,7 @@ const ChatContainer = () => {
       content: sendMessageValue,
       profilePic: userDetails?.profilePic,
       createdAt: new Date().toISOString(),
-      name: userDetails?.username,
+      details: userDetails,
       usersInChat,
       activeChatUserId,
     });

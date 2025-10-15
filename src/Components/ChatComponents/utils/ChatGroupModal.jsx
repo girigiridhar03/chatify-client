@@ -3,12 +3,12 @@ import {
   resetStates,
   setGroupSearchValue,
   setToggleModal,
-} from "../../Store/Userslice/userslice";
+} from "../../../Store/Userslice/userslice";
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { groupSearch } from "../../Store/Userslice/user.service";
-import { SearchCards } from "./utils/chat.utils";
-import { createGroup } from "../../Store/ChatSlice/chat.service";
+import { createGroup } from "../../../Store/ChatSlice/chat.service";
+import { groupSearch } from "../../../Store/Userslice/user.service";
+import { SearchCards } from "./chat.utils";
 
 const ChatGroupModal = ({
   headingName,
