@@ -69,10 +69,13 @@ const AuthComponent = () => {
   const handleLoginDetails = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(signin(loginDetails)).unwrap();
-      const user = await dispatch(getUserDetails()).unwrap();
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
+      const result = await dispatch(signin(loginDetails)).unwrap();
+      console.log(result);
+      if (result.success) {
+        const user = await dispatch(getUserDetails()).unwrap();
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     }

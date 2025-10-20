@@ -4,7 +4,6 @@ import {
   createGroup,
   fetchAllMessages,
   fetchChats,
-  getAllNotifications,
   getSingleChatDetails,
 } from "./chat.service";
 import { signout } from "../Userslice/user.service";
@@ -18,10 +17,6 @@ export const initialState = {
   selectedChat: "",
   allMessages: [],
   sendMessageValue: "",
-  notification: [],
-  notificationCount: null,
-  notificationLoading: false,
-  notificationToggle: false,
 };
 
 const chatSlice = createSlice({
@@ -33,15 +28,6 @@ const chatSlice = createSlice({
     },
     setSendMessageValue: (state, { payload }) => {
       state.sendMessageValue = payload;
-    },
-    setNotification: (state, { payload }) => {
-      state.notification.unshift(payload);
-    },
-    setNotificationCount: (state, { payload }) => {
-      state.notificationCount = payload;
-    },
-    setNotificationToggle: (state, { payload }) => {
-      state.notificationToggle = payload;
     },
   },
   extraReducers: (builder) => {
@@ -100,28 +86,10 @@ const chatSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
-    builder.addCase(getAllNotifications.pending, (state) => {
-      state.notificationLoading = true;
-    });
-    builder.addCase(getAllNotifications.fulfilled, (state, { payload }) => {
-      state.notificationLoading = false;
-      state.notification = payload?.notification;
-      state.notificationCount = payload?.unReadCount;
-    });
-    builder.addCase(getAllNotifications.rejected, (state, { payload }) => {
-      state.notificationLoading = false;
-      state.error = payload;
-    });
     builder.addCase(signout.fulfilled, () => initialState);
   },
 });
 
-export const {
-  setSelectedChat,
-  setSendMessageValue,
-  setNotification,
-  setNotificationCount,
-  setNotificationToggle,
-} = chatSlice.actions;
+export const { setSelectedChat, setSendMessageValue } = chatSlice.actions;
 
 export default chatSlice.reducer;

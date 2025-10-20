@@ -8,18 +8,20 @@ import {
   setSearchValue,
 } from "../../Store/Userslice/userslice";
 import { searchUsers } from "../../Store/Userslice/user.service";
-import { getAllNotifications } from "../../Store/ChatSlice/chat.service";
-import { setNotificationToggle } from "../../Store/ChatSlice/chatSlice";
+import { setNotificationToggle } from "../../Store/NotificationSlice/notificationSlice";
+import {
+  getAllNotifications,
+  viewNotification,
+} from "../../Store/NotificationSlice/notification.service";
 
 const ChatTopBar = () => {
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
   const searchValue = useSelector((state) => state?.authReducer?.searchValue);
   const notificationCount = useSelector(
-    (state) => state?.chatReducer?.notificationCount
+    (state) => state?.notificationReducer?.notificationCount
   );
-  const notification = useSelector((state) => state?.chatReducer?.notification);
-  const notificationLoading = useSelector(
-    (state) => state?.chatReducer?.notificationLoading
+  const notification = useSelector(
+    (state) => state?.notificationReducer?.notification
   );
   const dispatch = useDispatch();
   useEffect(() => {
@@ -54,15 +56,23 @@ const ChatTopBar = () => {
       {/* Notification and Profile Pic */}
       <div className="flex items-center gap-[1rem]">
         <div className="relative">
-          {notificationCount && notificationCount > 0 && (
+          {notificationCount > 0 && (
             <p className="absolute bg-red-600 w-[15px] h-[15px] rounded-full flex items-center justify-center text-[10px] font-semibold text-white right-0 top-[-6px] z-20">
               {notificationCount}
             </p>
           )}
 
           <button
-            onClick={() => dispatch(setNotificationToggle(true))}
-            className="text-2xl text-gray-500 cursor-pointer"
+            disabled={notification?.length === 0 ? true : false}
+            onClick={() => {
+              dispatch(setNotificationToggle(true));
+              dispatch(viewNotification());
+            }}
+            className={`text-2xl text-gray-500 ${
+              notification?.length === 0
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            }`}
           >
             <IoNotifications />
           </button>

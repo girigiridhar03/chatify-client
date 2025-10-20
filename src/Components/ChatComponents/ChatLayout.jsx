@@ -7,13 +7,13 @@ import { SearchCards } from "./utils/chat.utils";
 import { accessChat, fetchChats } from "../../Store/ChatSlice/chat.service";
 import { useEffect } from "react";
 import { socket } from "./utils/socket";
-import {
-  setNotification,
-  setNotificationCount,
-} from "../../Store/ChatSlice/chatSlice";
 import ProfileModal from "./utils/ProfileModal";
 import ChatGroupModal from "./utils/ChatGroupModal";
 import NotificationModal from "./utils/NotificationModal";
+import {
+  setNotification,
+  setNotificationCount,
+} from "../../Store/NotificationSlice/notificationSlice";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -27,7 +27,7 @@ const ChatLayout = () => {
   );
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
   const notificationToggle = useSelector(
-    (state) => state.chatReducer?.notificationToggle
+    (state) => state.notificationReducer?.notificationToggle
   );
   const dispatch = useDispatch();
 

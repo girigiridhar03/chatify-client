@@ -9,7 +9,6 @@ const ChatSideNav = () => {
   const dispatch = useDispatch();
   const chats = useSelector((state) => state?.chatReducer?.chats);
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {

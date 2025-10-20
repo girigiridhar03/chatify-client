@@ -1,14 +1,14 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setNotificationToggle,
-  setSelectedChat,
-} from "../../../Store/ChatSlice/chatSlice";
+import { setSelectedChat } from "../../../Store/ChatSlice/chatSlice";
 import moment from "moment";
+import { setNotificationToggle } from "../../../Store/NotificationSlice/notificationSlice";
 
 const NotificationModal = () => {
-  const notification = useSelector((state) => state.chatReducer?.notification);
+  const notification = useSelector(
+    (state) => state.notificationReducer?.notification
+  );
   const dispatch = useDispatch();
 
   return (
@@ -25,25 +25,34 @@ const NotificationModal = () => {
       </div>
       <div className="p-4 flex flex-col w-full gap-3.5">
         {notification?.map((item) => (
-          <div
-            key={item?._id}
-            onClick={() => dispatch(setSelectedChat(item?.chat?._id))}
-            className="bg-gray-200 p-3 shadow-lg w-full rounded-xl flex gap-1.5 items-center"
-          >
-            <div className="w-[55px] h-[55px] rounded-full overflow-hidden">
-              <img
-                src={item?.sender?.profilePic?.url}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="w-[90%]">
-              <div className="flex items-center justify-between w-full">
-                <p className="font-semibold">{item?.sender?.username}</p>
-                <p className="text-sm text-gray-600">
-                  {moment(item?.createdAt).format("hh:mm A")}
-                </p>
-              </div>
-              <p className="text-sm text-gray-600">{item?.message?.content}</p>
+          <div key={item?._id} className="flex flex-col gap-[1rem]">
+            <h5 className="text-gray-400 font-bold">{item?._id}</h5>
+            <div className="flex flex-col gap-[1rem]">
+              {item?.notifications.map((item) => (
+                <div
+                  key={item?._id}
+                  onClick={() => dispatch(setSelectedChat(item?.chat?._id))}
+                  className="bg-gray-200 p-3 shadow-lg w-full rounded-xl flex gap-1.5 items-center"
+                >
+                  <div className="w-[55px] h-[55px] rounded-full overflow-hidden">
+                    <img
+                      src={item?.sender?.profilePic?.url}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-[90%]">
+                    <div className="flex items-center justify-between w-full">
+                      <p className="font-semibold">{item?.sender?.username}</p>
+                      <p className="text-sm text-gray-600">
+                        {moment(item?.createdAt).format("hh:mm A")}
+                      </p>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {item?.message?.content}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         ))}

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleChatDetails } from "../../Store/ChatSlice/chat.service";
+import {
+  fetchChats,
+  getSingleChatDetails,
+} from "../../Store/ChatSlice/chat.service";
 import { ChatContainerFooter, ChatContainerTopBar } from "./utils/chat.utils";
 import ChatContainerMessage from "./utils/ChatContainerMessage";
 import { setSendMessageValue } from "../../Store/ChatSlice/chatSlice";
@@ -131,6 +134,7 @@ const ChatContainer = () => {
       activeChatUserId,
     });
     dispatch(setSendMessageValue(""));
+    dispatch(fetchChats(""));
   };
 
   const handleChangeInput = (e) => {
