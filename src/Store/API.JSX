@@ -1,9 +1,14 @@
 import axios from "axios";
 
+const url =
+  import.meta.env.VITE_ENV_URL === "local"
+    ? "http://localhost:8080/api"
+    : "https://chatify-server-cit8.onrender.com/api";
 const API = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: url,
   withCredentials: true,
 });
+o;
 
 API.interceptors.response.use(
   (response) => response,
