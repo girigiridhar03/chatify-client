@@ -14,6 +14,8 @@ import {
   setNotification,
   setNotificationCount,
 } from "../../Store/NotificationSlice/notificationSlice";
+import moment from "moment";
+import { useRef } from "react";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -29,7 +31,15 @@ const ChatLayout = () => {
   const notificationToggle = useSelector(
     (state) => state.notificationReducer?.notificationToggle
   );
+  const notification = useSelector(
+    (state) => state.notificationReducer?.notification
+  );
   const dispatch = useDispatch();
+  const notificationRef = useRef(notification);
+
+  useEffect(() => {
+    notificationRef.current = notification;
+  }, [notification]);
 
   useEffect(() => {
     const registerUser = () => {
@@ -47,33 +57,69 @@ const ChatLayout = () => {
   }, [userDetails]);
 
   useEffect(() => {
-    socket.on("notification", (data) => {
-      dispatch(setNotification(data));
+    const handleNotification = (data) => {
+      const dateId = moment(data?._id).format("YYYY-MM-DD");
+
+      const getIndex = notificationRef.current.findIndex((item) =>
+        moment(item?._id).isSame(moment(dateId), "day")
+      );
+      let updatedMessages;
+      if (getIndex !== -1) {
+        updatedMessages = [...notificationRef.current];
+        updatedMessages[getIndex] = {
+          ...updatedMessages[getIndex],
+          notifications: [
+            ...updatedMessages[getIndex].notifications,
+            ...data.notifications,
+          ],
+        };
+      } else {
+        updatedMessages = [
+          ...notificationRef.current,
+          { _id: dateId, notifications: [...data.notifications] },
+        ];
+      }
+
+      dispatch(setNotification(updatedMessages));
+
+      // Browser notification
+      const firstNotification = data.notifications[0];
+      if (!firstNotification) return;
+
+      const showNotification = (username, message) => {
+        new Notification(`New message from ${username}`, {
+          body: message,
+        });
+      };
 
       if (Notification.permission === "granted") {
-        new Notification(`New message from ${data.sender?.username}`, {
-          body: data.message?.content,
-        });
+        showNotification(
+          firstNotification.sender?.username,
+          firstNotification.message?.content
+        );
       } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then((permission) => {
           if (permission === "granted") {
-            new Notification(`New message from ${data.sender?.username}`, {
-              body: data.message?.content,
-            });
+            showNotification(
+              firstNotification.sender?.username,
+              firstNotification.message?.content
+            );
           }
         });
       }
-    });
+    };
+
+    socket.on("notification", handleNotification);
 
     socket.on("notification_count", (data) => {
       dispatch(setNotificationCount(data?.notificationCount));
     });
 
     return () => {
-      socket.off("notification");
+      socket.off("notification", handleNotification);
       socket.off("notification_count");
     };
-  }, []);
+  }, []); // run once
 
   const handleAccessChat = async (user) => {
     try {

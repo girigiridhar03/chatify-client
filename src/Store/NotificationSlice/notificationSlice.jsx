@@ -16,7 +16,7 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     setNotification: (state, { payload }) => {
-      state.notification.unshift(payload);
+      state.notification = payload;
     },
     setNotificationCount: (state, { payload }) => {
       state.notificationCount = payload;

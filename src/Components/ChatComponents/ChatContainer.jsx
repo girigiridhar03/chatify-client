@@ -155,7 +155,6 @@ const ChatContainer = () => {
       });
     }, 1000);
   };
-  console.log("messages", messages);
   return (
     <div className="w-[80%] h-[100%] bg-[#ffffff] shadow-lg rounded-lg flex flex-col overflow-hidden">
       {/* TopBar */}
