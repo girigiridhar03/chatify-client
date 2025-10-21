@@ -8,7 +8,7 @@ const API = axios.create({
   baseURL: url,
   withCredentials: true,
 });
-o;
+
 
 API.interceptors.response.use(
   (response) => response,
