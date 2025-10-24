@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 const ProtectRoute = ({ children }) => {
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
-  const localStoredUser = JSON.parse(localStorage.getItem("user"));
+  const localStoredUser = JSON.parse(sessionStorage.getItem("user"));
   const user = userDetails || localStoredUser;
 
   if (

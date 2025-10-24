@@ -15,7 +15,7 @@ const initialState = {
   searchLoading: false,
   usersBySearch: [],
   error: null,
-  userDetails: JSON.parse(localStorage.getItem("user")) || {},
+  userDetails: JSON.parse(sessionStorage.getItem("user")) || {},
   searchValue: "",
   groupSearchValue: "",
   groupSearchUsers: [],

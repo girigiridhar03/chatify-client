@@ -49,7 +49,7 @@ const ProfileModal = () => {
   const handleSignout = async () => {
     try {
       await dispatch(signout()).unwrap();
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
       toast.success("Logout successfully.");
       navigate("/signin");
     } catch (error) {

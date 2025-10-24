@@ -73,7 +73,7 @@ const AuthComponent = () => {
       console.log(result);
       if (result.success) {
         const user = await dispatch(getUserDetails()).unwrap();
-        localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
         navigate("/");
       }
     } catch (error) {
