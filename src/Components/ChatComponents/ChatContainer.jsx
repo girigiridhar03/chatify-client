@@ -114,7 +114,13 @@ const ChatContainer = () => {
   }, [selectedChat]);
 
   if (Object.keys(singleChatDetails)?.length === 0) {
-    return <div>No data</div>;
+    return (
+      <div className="w-[100%] lg:w-[68%] xl:w-[75%] h-[100%] bg-[#F5F5F5] shadow-lg rounded-lg flex items-center justify-center">
+        <p className="text-gray-500 text-lg font-medium">
+          Click any chat to start the conversation.
+        </p>
+      </div>
+    );
   }
 
   const handleSendMessage = () => {
@@ -156,7 +162,7 @@ const ChatContainer = () => {
     }, 1000);
   };
   return (
-    <div className="w-[80%] h-[100%] bg-[#ffffff] shadow-lg rounded-lg flex flex-col overflow-hidden">
+    <div className="w-[100%] lg:w-[68%] xl:w-[75%] h-[100%] bg-[#ffffff] shadow-lg rounded-lg flex flex-col overflow-hidden">
       {/* TopBar */}
 
       <div className="bg-white h-[9%] shadow overflow-hidden">

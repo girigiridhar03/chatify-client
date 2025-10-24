@@ -12,7 +12,7 @@ const NotificationModal = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="bg-white w-[30%] rounded-xl shadow-lg flex flex-col gap-6 absolute right-3.5 top-22 max-h-[350px] overflow-auto">
+    <div className="bg-white  w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] rounded-xl shadow-lg flex flex-col gap-6 absolute right-3.5 top-22 max-h-[350px] overflow-auto">
       {/* Notification Header */}
       <div className="border-b-1 border-gray-300 pb-3 flex items-center justify-between sticky top-0 bg-white w-full p-4">
         <h2 className="text-xl font-semibold">Notifications</h2>

@@ -71,7 +71,7 @@ const ChatGroupModal = ({
 
   return (
     <div className="w-full h-full fixed bg-[rgba(0,0,0,0.5)] top-0 left-0">
-      <div className="bg-white w-[30%] rounded-xl shadow-lg p-4 relative flex flex-col gap-6 mx-auto mt-[10rem]">
+      <div className="bg-white w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] rounded-xl shadow-lg p-4 relative flex flex-col gap-6 mx-auto mt-[10rem]">
         <button
           onClick={() => {
             dispatch(setToggleModal(false));
@@ -79,12 +79,12 @@ const ChatGroupModal = ({
             setGroupSearchData([]);
             dispatch(resetStates());
           }}
-          className="absolute right-4 text-xl cursor-pointer"
+          className="absolute right-4 text-lg cursor-pointer"
         >
           <IoCloseSharp />
         </button>
 
-        <h4 className="text-center text-3xl font-semibold">{headingName}</h4>
+        <h4 className="text-center text-xl font-semibold">{headingName}</h4>
 
         {/* Inputs */}
         <div className="flex flex-col gap-6">

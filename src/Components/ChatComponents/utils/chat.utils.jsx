@@ -77,6 +77,11 @@ export const SearchCards = ({ user, handleAccessChat, bgcolor, hideId }) => {
       className={`${bgcolor} shadow-md rounded-lg px-3 py-2 w-full flex items-center gap-[10px] justify-between cursor-pointer`}
       onMouseEnter={() => setButtonToggle(true)}
       onMouseLeave={() => setButtonToggle(false)}
+      onClick={() => {
+        if (!hideId?.includes(user?._id)) {
+          handleAccessChat(user);
+        }
+      }}
     >
       {/* Avatar */}
       <div className="flex items-center gap-[12px]">
@@ -117,8 +122,8 @@ export const InputFields = ({
   setAbout,
 }) => {
   return (
-    <div className="w-full flex flex-col gap-5">
-      <div className="w-full border-y-2 border-gray-200 py-4">
+    <div className="w-full flex flex-col gap-3 md:gap-5">
+      <div className="w-full border-y-2 border-gray-200 py-2 md:py-4">
         <div className="flex w-full">
           <p className="w-[30%]">Username</p>
           <div className="w-[70%]">
@@ -131,7 +136,7 @@ export const InputFields = ({
           </div>
         </div>
       </div>
-      <div className="w-full border-y-2 border-gray-200 py-4">
+      <div className="w-full border-y-2 border-gray-200 py-2 md:py-4">
         <div className="flex w-full">
           <p className="w-[30%]">Email</p>
           <div className="w-[70%]">
@@ -144,7 +149,7 @@ export const InputFields = ({
           </div>
         </div>
       </div>
-      <div className="w-full border-y-2 border-gray-200 py-4">
+      <div className="w-full border-y-2 border-gray-200 py-2 md:py-4">
         <div className="flex w-full">
           <p className="w-[30%]">About</p>
           <div className="w-[70%]">
@@ -175,7 +180,7 @@ export const FooterButtons = ({
       {showEditForm && (
         <button
           onClick={handleSignout}
-          className="flex items-center gap-2 bg-red-100 px-3 py-2 text-red-700 font-semibold rounded-lg cursor-pointer"
+          className="flex items-center gap-2 bg-red-100 px-2 py-1 text-sm md:px-3 md:py-2 md:text-md text-red-700 font-semibold rounded-lg cursor-pointer"
         >
           <span>
             <IoLogOut />
@@ -186,14 +191,14 @@ export const FooterButtons = ({
       <div className="flex gap-2">
         <button
           onClick={() => dispatch(setProfileToggleModal(false))}
-          className="rounded-lg border-2 border-gray-300 px-3 py-2 cursor-pointer"
+          className="rounded-lg border-2 border-gray-300 px-2 py-1 text-sm md:px-3 md:py-2 md:text-md cursor-pointer"
         >
           Close
         </button>
         {showEditForm && (
           <button
             onClick={handleUpdate}
-            className="px-3 py-2 bg-gradient-to-r from-[#A259FF] to-[#6A11CB] rounded-lg text-white cursor-pointer"
+            className="px-2 py-1 text-sm md:px-3 md:py-2 md:text-md bg-gradient-to-r from-[#A259FF] to-[#6A11CB] rounded-lg text-white cursor-pointer"
           >
             Save changes
           </button>
@@ -218,7 +223,7 @@ export const ProfileHeader = ({
     <div className="w-full flex gap-[1rem] items-center">
       <button
         onClick={handleClick}
-        className="w-[150px] h-[150px] overflow-hidden rounded-full border-2 relative group cursor-pointer"
+        className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] overflow-hidden rounded-full border-2 relative group cursor-pointer"
       >
         {showEditForm && (
           <div className="bg-[rgb(0,0,0,0.6)] absolute w-full h-full flex items-center justify-center text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -244,7 +249,7 @@ export const ProfileHeader = ({
       </button>
       <div className="flex flex-col gap-[1rem]">
         <div className="flex flex-col gap-0.5">
-          <h5 className="text-2xl font-semibold">{username}</h5>
+          <h5 className="text-xl md:text-2xl font-semibold">{username}</h5>
           <p className="text-gray-500 font-semibold">
             {singleUserDetails?.email}
           </p>
@@ -264,7 +269,10 @@ export const ChatContainerTopBar = ({
   return (
     <div className="w-full flex justify-between items-center h-full px-[0.5rem]">
       <div className="flex items-center gap-[.3rem]">
-        <button className="text-4xl cursor-pointer">
+        <button
+          className="text-4xl cursor-pointer"
+          onClick={() => dispatch(setSelectedChat(""))}
+        >
           <MdKeyboardArrowLeft />
         </button>
         <div className="flex  items-center gap-2">

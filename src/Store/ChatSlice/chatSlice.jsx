@@ -25,6 +25,9 @@ const chatSlice = createSlice({
   reducers: {
     setSelectedChat: (state, { payload }) => {
       state.selectedChat = payload;
+      if (!payload) {
+        state.singleChatDetails = {};
+      }
     },
     setSendMessageValue: (state, { payload }) => {
       state.sendMessageValue = payload;

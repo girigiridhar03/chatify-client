@@ -16,7 +16,7 @@ const ChatSideNav = () => {
   }, [searchValue]);
 
   return (
-    <div className="w-[20%] h-[100%] py-[1rem] px-[0.9rem] flex flex-col gap-[1rem] bg-[#F5F5F5] shadow-md rounded-lg">
+    <div className={`w-[100%] lg:w-[32%] xl:w-[25%] h-[100%] py-[1rem] px-[0.9rem] flex flex-col gap-[1rem] bg-[#F5F5F5] shadow-md rounded-lg overflow-auto`}>
       {/* Header */}
       <header className="w-[100%] flex items-center justify-between">
         <h4 className="text-2xl font-bold">Chats</h4>

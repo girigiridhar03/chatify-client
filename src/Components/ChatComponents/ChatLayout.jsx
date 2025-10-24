@@ -34,6 +34,7 @@ const ChatLayout = () => {
   const notification = useSelector(
     (state) => state.notificationReducer?.notification
   );
+  const selectedChat = useSelector((state) => state.chatReducer?.selectedChat);
   const dispatch = useDispatch();
   const notificationRef = useRef(notification);
 
@@ -135,8 +136,8 @@ const ChatLayout = () => {
   return (
     <div className="flex flex-col gap-[1rem] h-[100vh] overflow-hidden px-[1rem] py-[0.5rem] relative bg-[#ececec]">
       {/* Search Box */}
-      <div className=" w-[51%] h-[500px] absolute  left-1/2 -translate-x-1/2 top-[8%]">
-        {usersBySearch?.length > 0 && (
+      {usersBySearch?.length > 0 && (
+        <div className="w-[90%] md:w-[51%] h-[500px] absolute  left-1/2 -translate-x-1/2 top-[8%]">
           <div className="bg-white  shadow-lg rounded-lg w-[95%] mx-auto max-h-[400px] overflow-auto p-[1rem] flex flex-col gap-[13px]">
             <h5 className="text-lg text-gray-500 font-semibold">Users</h5>
             {usersBySearch?.map((user) => (
@@ -148,12 +149,19 @@ const ChatLayout = () => {
               />
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
       <ChatTopBar />
-      <div className=" w-[100%] h-[93%] flex gap-[1rem] overflow-hidden py-[0.3rem]">
-        <ChatSideNav />
-        <ChatContainer />
+      <div className=" w-[100%] h-[93%] flex overflow-hidden py-[0.3rem]">
+        <div className="w-full h-full lg:hidden">
+          {!selectedChat ? <ChatSideNav /> : <ChatContainer />}
+        </div>
+        <div className="w-full h-full hidden lg:flex gap-[1rem]">
+          <ChatSideNav />
+          <ChatContainer />
+        </div>
+
         {/* <ChatRightNav /> */}
       </div>
 

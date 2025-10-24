@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Login = ({ loginDetails, handleLoginDetails, handleLogin }) => {
   return (
-    <div className="bg-white shadow-lg w-[50%] max-w-[500px] p-[1rem] mt-[8rem] border-2 border-gray-300 rounded-lg flex flex-col gap-[1rem] items-center mx-auto">
+    <div className="bg-white shadow-lg w-[95%] md:w-[70%] lg:w-[50%] max-w-[500px] p-[1rem] mt-[8rem] border-2 border-gray-300 rounded-lg flex flex-col gap-[1rem] items-center mx-auto">
       <div>
         <h4 className="font-bold">Welcome Back!</h4>
       </div>

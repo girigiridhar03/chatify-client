@@ -14,7 +14,7 @@ const SignUp = ({
   return (
     <div className="bg-white shadow-lg max-w-[750px] w-[95%] mt-[8rem] mx-auto rounded-lg  flex flex-col items-center py-[1.5rem] px-[2rem] gap-[1rem]">
       <div className="flex justify-end w-[100%]">
-        <p className="font-semibold">
+        <p>
           Already a Member?{" "}
           <Link to={"/signin"}>
             <span className="text-[#1877f2]">Sign in</span>
@@ -26,8 +26,8 @@ const SignUp = ({
         className="w-[100%] flex flex-col gap-[1rem]"
         onSubmit={handleSignup}
       >
-        <div className="flex justify-between w-[100%] gap-[18px]">
-          <label htmlFor="username" className="w-[50%] flex flex-col gap-[5px]">
+        <div className="flex justify-between md:flex-row flex-col-reverse w-[100%] items-center gap-[18px]">
+          <label htmlFor="username" className="w-[100%] md:w-[50%] flex flex-col gap-[5px]">
             <p className="font-semibold text-[15px] pl-2">Username</p>
             <input
               className="w-[100%] border-2 border-[#cfcfcf] text-[15px] rounded-2xl p-[10px]"
@@ -72,8 +72,8 @@ const SignUp = ({
             <p className="text-[15px] font-semibold">Add Photo</p>
           </div>
         </div>
-        <div className="flex justify-between w-[100%] gap-[18px]">
-          <label htmlFor="email" className="w-[50%] flex flex-col gap-[5px]">
+        <div className="flex justify-between w-[100%] md:flex-row flex-col gap-[18px]">
+          <label htmlFor="email" className="md:w-[50%] w-[100%] flex flex-col gap-[5px]">
             <p className="font-semibold text-[15px] pl-2">Email</p>
             <input
               className="w-[100%] border-2 border-[#cfcfcf] text-[15px] rounded-2xl p-[10px]"
@@ -86,7 +86,7 @@ const SignUp = ({
             />
           </label>
 
-          <label htmlFor="password" className="w-[50%] flex flex-col gap-[5px]">
+          <label htmlFor="password" className="md:w-[50%] w-[100%] flex flex-col gap-[5px]">
             <p className="font-semibold text-[15px] pl-2">Password</p>
             <input
               className="w-[100%] border-2 border-[#cfcfcf] text-[15px] rounded-2xl p-[10px]"
