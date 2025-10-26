@@ -17,6 +17,9 @@ const ChatContainer = () => {
   const singleChatDetails = useSelector(
     (state) => state.chatReducer?.singleChatDetails
   );
+  const singleChatLoading = useSelector(
+    (state) => state.chatReducer?.singleChatLoading
+  );
   const sendMessageValue = useSelector(
     (state) => state.chatReducer?.sendMessageValue
   );
@@ -112,6 +115,16 @@ const ChatContainer = () => {
     if (!selectedChat) return;
     dispatch(getSingleChatDetails(selectedChat));
   }, [selectedChat]);
+
+  if (singleChatLoading) {
+    return (
+      <div className="w-[100%] lg:w-[68%] xl:w-[75%] h-[100%] bg-[#F5F5F5] shadow-lg rounded-lg flex items-center justify-center">
+        <p className="text-gray-500 text-lg font-medium">
+          Loading chat please wait.
+        </p>
+      </div>
+    );
+  }
 
   if (Object.keys(singleChatDetails)?.length === 0) {
     return (

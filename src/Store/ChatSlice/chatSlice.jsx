@@ -17,6 +17,7 @@ export const initialState = {
   selectedChat: "",
   allMessages: [],
   sendMessageValue: "",
+  singleChatLoading: false,
 };
 
 const chatSlice = createSlice({
@@ -68,14 +69,14 @@ const chatSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(getSingleChatDetails.pending, (state) => {
-      state.loading = true;
+      state.singleChatLoading = true;
     });
     builder.addCase(getSingleChatDetails.fulfilled, (state, { payload }) => {
-      state.loading = false;
+      state.singleChatLoading = false;
       state.singleChatDetails = payload;
     });
     builder.addCase(getSingleChatDetails.rejected, (state, { payload }) => {
-      state.loading = false;
+      state.singleChatLoading = false;
       state.error = payload;
     });
     builder.addCase(fetchAllMessages.pending, (state) => {

@@ -8,6 +8,7 @@ import {
 } from "../../Store/Userslice/user.service";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import { toast } from "react-toastify";
 const AuthComponent = () => {
   const fileInputRef = useRef(null);
   const { pathname } = useLocation();
@@ -71,10 +72,15 @@ const AuthComponent = () => {
     try {
       const result = await dispatch(signin(loginDetails)).unwrap();
       console.log(result);
-      if (result.success) {
+      if (result?.status === 200) {
         const user = await dispatch(getUserDetails()).unwrap();
         sessionStorage.setItem("user", JSON.stringify(user));
+        toast.success("Login successfully.");
         navigate("/");
+      }
+
+      if (result?.status === 401) {
+        toast.success(result?.response?.data?.message);
       }
     } catch (error) {
       console.log(error);

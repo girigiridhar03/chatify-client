@@ -22,7 +22,7 @@ export const signin = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await API.post("/auth/signin", formData);
-      return response?.data;
+      return response;
     } catch (error) {
       return rejectWithValue(error);
     }
