@@ -32,7 +32,7 @@ const ChatContainerMessage = ({ allMessages, otherUsersTyping }) => {
           {msg?.messages?.map((message, i) => (
             <div
               key={i}
-              className={`p-2 rounded-xl max-w-[60%] flex items-end gap-[0.8rem] ${
+              className={`p-2 rounded-xl max-w-[60%] flex-wrap flex items-end gap-[0.8rem] ${
                 message.sender?._id === userDetails?._id
                   ? "bg-blue-500 text-white self-end"
                   : "bg-gray-200 text-gray-800 self-start"

@@ -16,6 +16,7 @@ import {
 } from "../../Store/NotificationSlice/notificationSlice";
 import moment from "moment";
 import { useRef } from "react";
+import Loader from "./utils/Loader";
 
 const ChatLayout = () => {
   const usersBySearch = useSelector(
@@ -28,6 +29,8 @@ const ChatLayout = () => {
     (state) => state?.authReducer?.profileModalToggle
   );
   const userDetails = useSelector((state) => state?.authReducer?.userDetails);
+  const authLoading = useSelector((state) => state?.authReducer?.loading);
+  const chatLoading = useSelector((state) => state.chatReducer?.loading);
   const notificationToggle = useSelector(
     (state) => state.notificationReducer?.notificationToggle
   );
@@ -35,6 +38,7 @@ const ChatLayout = () => {
     (state) => state.notificationReducer?.notification
   );
   const selectedChat = useSelector((state) => state.chatReducer?.selectedChat);
+
   const dispatch = useDispatch();
   const notificationRef = useRef(notification);
 
@@ -136,6 +140,8 @@ const ChatLayout = () => {
   return (
     <div className="flex flex-col gap-[1rem] h-[100vh] overflow-hidden px-[1rem] py-[0.5rem] relative bg-[#ececec]">
       {/* Search Box */}
+      {(authLoading || chatLoading) && <Loader />}
+
       {usersBySearch?.length > 0 && (
         <div className="w-[90%] md:w-[51%] h-[500px] absolute  left-1/2 -translate-x-1/2 top-[8%]">
           <div className="bg-white  shadow-lg rounded-lg w-[95%] mx-auto max-h-[400px] overflow-auto p-[1rem] flex flex-col gap-[13px]">
